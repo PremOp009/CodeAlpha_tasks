@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "GenURL — URL Shortener",
+  "version": "1.0.0",
+  "description": "Shorten any URL in one click using your GenURL backend.",
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "clipboardWrite",
+    "storage",
+    "notifications",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://codealpha-genurl.onrender.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "GenURL — Shorten this page",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16":  "icons/icon16.png",
+    "48":  "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
