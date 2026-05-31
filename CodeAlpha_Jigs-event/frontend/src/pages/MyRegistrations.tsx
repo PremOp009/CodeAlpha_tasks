@@ -72,6 +72,13 @@ const MyRegistrations = () => {
                   src={reg.event.image_url || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400'} 
                   alt={reg.event.title}
                   className="w-full md:w-48 h-32 object-cover rounded-xl"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    const defaultImg = 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400';
+                    if (target.src !== defaultImg) {
+                      target.src = defaultImg;
+                    }
+                  }}
                 />
                 <div className="flex flex-col justify-center">
                   <div className="flex items-center gap-3 mb-2">

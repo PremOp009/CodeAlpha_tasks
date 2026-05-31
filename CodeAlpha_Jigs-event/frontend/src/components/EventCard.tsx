@@ -24,6 +24,12 @@ const EventCard: React.FC<Props> = ({ event, onBookmarkToggle }) => {
           src={event.image_url || defaultImage}
           alt={event.title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== defaultImage) {
+              target.src = defaultImage;
+            }
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-surface-900 via-surface-900/20 to-transparent opacity-80" />
 

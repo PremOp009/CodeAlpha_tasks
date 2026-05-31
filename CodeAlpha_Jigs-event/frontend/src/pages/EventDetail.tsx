@@ -188,6 +188,12 @@ const EventDetail = () => {
           src={event.image_url || defaultImage} 
           alt={event.title} 
           className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== defaultImage) {
+              target.src = defaultImage;
+            }
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-transparent" />
         
