@@ -14,6 +14,8 @@ import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import { format } from 'date-fns'
 
+const fallbackImage = "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop";
+
 /* ─── Animated Counter ─── */
 const AnimatedCounter: React.FC<{ target: number; suffix?: string; duration?: number }> = ({
   target, suffix = '', duration = 2000,
@@ -438,9 +440,18 @@ const Home = () => {
                 className="group relative w-full h-full rounded-2xl overflow-hidden block border border-white/[0.08] hover:border-brand-violet/30 transition-all duration-300 hover:shadow-glow-purple"
               >
                 <img
-                  src={event.image_url || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1000'}
-                  alt={event.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  src={
+                    event?.image_url && event.image_url.trim() !== ""
+                      ? event.image_url
+                      : fallbackImage
+                  }
+                  alt={event?.title || "Event image"}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 bg-black"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.src = fallbackImage;
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-surface-900/95 via-surface-900/30 to-transparent" />
 

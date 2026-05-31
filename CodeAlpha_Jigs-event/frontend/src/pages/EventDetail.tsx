@@ -16,6 +16,8 @@ declare global {
   }
 }
 
+const fallbackImage = "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop";
+
 const EventDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -172,7 +174,6 @@ const EventDetail = () => {
     )
   }
 
-  const defaultImage = 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=1200'
   const isRegistered = event.user_registration_status?.registered
 
   // Register button label
@@ -188,14 +189,17 @@ const EventDetail = () => {
       {/* Hero Header */}
       <div className="relative h-[40vh] md:h-[50vh] rounded-3xl overflow-hidden mb-12 shadow-2xl">
         <img 
-          src={event.image_url || defaultImage} 
-          alt={event.title} 
-          className="w-full h-full object-cover"
+          src={
+            event?.image_url && event.image_url.trim() !== ""
+              ? event.image_url
+              : fallbackImage
+          }
+          alt={event?.title || "Event image"}
+          className="w-full h-full object-cover bg-black"
+          loading="lazy"
+          referrerPolicy="no-referrer"
           onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            if (target.src !== defaultImage) {
-              target.src = defaultImage;
-            }
+            e.currentTarget.src = fallbackImage;
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-transparent" />

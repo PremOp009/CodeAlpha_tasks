@@ -6,6 +6,8 @@ import { Calendar, MapPin, Download, XCircle, Ticket } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
 
+const fallbackImage = "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop";
+
 const MyRegistrations = () => {
   const [registrations, setRegistrations] = useState<Registration[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -69,15 +71,17 @@ const MyRegistrations = () => {
               {/* Event Info */}
               <div className="flex-grow p-6 flex flex-col md:flex-row gap-6">
                 <img 
-                  src={reg.event.image_url || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400'} 
-                  alt={reg.event.title}
-                  className="w-full md:w-48 h-32 object-cover rounded-xl"
+                  src={
+                    reg.event.image_url && reg.event.image_url.trim() !== ""
+                      ? reg.event.image_url
+                      : fallbackImage
+                  }
+                  alt={reg.event.title || "Event image"}
+                  className="w-full md:w-48 h-32 object-cover rounded-xl bg-black"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
                   onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    const defaultImg = 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400';
-                    if (target.src !== defaultImg) {
-                      target.src = defaultImg;
-                    }
+                    e.currentTarget.src = fallbackImage;
                   }}
                 />
                 <div className="flex flex-col justify-center">
