@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 import { Calendar, Clock, MapPin, Users, Heart, Share2, Ticket, CheckCircle2, CreditCard, IndianRupee } from 'lucide-react'
 import { format } from 'date-fns'
+import { loadRazorpay } from '../utils/razorpay'
 
 // Razorpay global type declaration
 declare global {
@@ -58,12 +59,14 @@ const EventDetail = () => {
 
   // ── Paid event — Razorpay checkout ──────────────────────────────────────────
   const handlePaidRegister = async () => {
-    if (!window.Razorpay) {
-      toast.error('Payment gateway not loaded. Please refresh the page.')
+    setIsRegistering(true)
+
+    const isLoaded = await loadRazorpay()
+    if (!isLoaded) {
+      toast.error('Failed to load payment gateway. Please check your internet connection.')
+      setIsRegistering(false)
       return
     }
-
-    setIsRegistering(true)
 
     try {
       // 1. Create a Razorpay order on the backend
@@ -354,7 +357,11 @@ const EventDetail = () => {
                   className="btn-primary w-full py-4 text-lg shadow-glow-primary flex items-center justify-center gap-2"
                   id="register-btn"
                 >
-                  {!isRegistering && !event.is_free && <CreditCard size={20} />}
+                  {isRegistering ? (
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  ) : !event.is_free && (
+                    <CreditCard size={20} />
+                  )}
                   {getRegisterLabel()}
                 </button>
               )}
